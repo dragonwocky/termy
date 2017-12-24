@@ -53,7 +53,7 @@ var command = '',
       typed: true
     },
     clear: {
-      description: 'remove all previously run commands from the terminal.',
+      description: 'removes all previously run commands from the terminal.',
       usage: 'clear'
     },
     exit: {
@@ -62,6 +62,14 @@ var command = '',
       typed: true
     }
   };
+
+// Add neccessary CSS.
+$('head').append('<style type="text/css">a,body{color:#fff}body{background:#000;font-family:Courier}a{text-decoration:none;font-weight:700}p{margin:0}.cursor{height:3px;width:10px;margin-left:5px;margin-bottom:-1px;background:#fff;display:inline-block}</style>');
+// Add neccessary <div> elements.
+$(window).bind("load", function () {
+  document.body.innerHTML = '<div class= "init"></div><div class="terminal"></div><div class="typed"></div>';
+  initializeTermy();
+});
 
 // Adds Termy loading text.
 function initializeTermy() {
@@ -76,11 +84,11 @@ function initializeTermy() {
   init += 'by <a href="https://thedragonring.me">TheDragonRing</a>, licensed under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.<br>';
   init += '<br>';
   init += 'Run <i>help</i> to see available commands.<br>';
-  $('.init').typed({
+  new Typed('.init', {
     strings: [init],
     typeSpeed: -100,
     showCursor: false,
-    callback: function () {
+    onComplete: function (self) {
       shell();
     }
   });
@@ -124,7 +132,7 @@ function shell() {
       if (key !== 13) {
         var c = String.fromCharCode(key);
         // Only allow letters.
-        !(/^[\w\d\s-]/i).test(c) ? c = c.replace(/[^\w\d\s-]/i, '') : null;
+        !(/^[\w\d\s\.-]/i).test(c) ? c = c.replace(/[^\w\d\s\.-]/i, '') : null;
         command += c;
         $('#' + (commandCount - 1) + ' .input').append(c);
         $(this).scrollTop($(this).height());
@@ -160,9 +168,17 @@ function shell() {
             $(this).scrollTop($(this).height());
           }
           // Prepare to recieve next command.
-          if (command != 'exit' && command != 'google') {
-            displayPrefix();
+          var typedCommands = [];
+          Object.getOwnPropertyNames(commands).forEach(
+            function (val, idx, array) {
+              if (commands[val]['typed']) {
+                typedCommands.push(val);
+              }
+            }
+          );
+          if (typedCommands.indexOf(command) === -1) {
             command = '';
+            displayPrefix();
           }
         }
         return false;
@@ -180,10 +196,10 @@ function stringUnderline(str, char) {
   return '<br>' + underline;
 }
 
-/* COMMANDS */
+/* CORE COMMANDS */
 
 // help - displays all available commands.
-function help() {
+function help(args) {
   var help = 'Available Commands:' + stringUnderline('Available Commands:', '-');
   Object.getOwnPropertyNames(commands).forEach(
     function (val, idx, array) {
@@ -219,6 +235,39 @@ function man(args) {
     $('#' + (commandCount - 1)).append('<span style="color: #f00">ERROR</span>: this command should be executed as <i>man &lt;command&gt;</i>. To see available commands run <i>help</i>.');
   }
 }
+
+// clear - remove all previously run commands from the terminal.
+function clear(args) {
+  $('.terminal').empty();
+}
+
+// exit - logs out, to execute commands once again the page must be reloaded.
+function exit(args, url) {
+  loggedIn = false;
+  $(window).unbind('keypress');
+  $(window).unbind('keydown');
+  var logout = '<br>';
+  logout += '>> Logged out<br>';
+  logout += '>> Closed connection to ' + host + '<br>';
+  if (url) {
+    logout += 'Goodbye. Thank you for using Termy.';
+  } else {
+    logout += 'To use Termy once again, <a href="">reload the page</a>.';
+  }
+  $(this).scrollTop($(this).height());
+  new Typed('.typed', {
+    strings: [logout],
+    typeSpeed: -100,
+    showCursor: false,
+    onComplete: function (self) {
+      if (url) {
+        window.location.href = url;
+      }
+    }
+  });
+}
+
+/* CUSTOM COMMANDS */
 
 // time - googles the command arguments.
 function google(args) {
@@ -257,36 +306,4 @@ function time(args) {
     gmt = (date.getTimezoneOffset() < 0) ? '+' + hourOffset + ':' + minOffset : ((date.getTimezoneOffset() > 0) ? '-' + hourOffset + ':' + minOffset : '00:00');
   // Display time details to user.
   $('#' + (commandCount - 1)).append(h + ':' + m + ':' + s + ' ' + meridiem + ', ' + dd + '/' + mm + '/' + yyyy + ', ' + timezone + ' (GMT' + gmt + ')');
-}
-
-// clear - remove all previously run commands from the terminal.
-function clear() {
-  $('.terminal').empty();
-}
-
-// exit - logs out, to execute commands once again the page must be reloaded.
-function exit(args, url) {
-  loggedIn = false;
-  $(window).unbind('keypress');
-  $(window).unbind('keydown');
-  var logout = '<br>';
-  logout += '>> Logged out<br>';
-  logout += '>> Closed connection to ' + host + '<br>';
-  if (url) {
-    logout += 'Goodbye. Thank you for using Termy.';
-  } else {
-    logout += 'To use Termy once again, <a href="">reload the page</a>.';
-  }
-  $(this).scrollTop($(this).height());
-  $('.typed').typed({
-    strings: [logout],
-    typeSpeed: -100,
-    showCursor: false,
-    callback: function () {
-      if (url) {
-        window.location.href = url;
-      }
-    }
-  });
-
 }
