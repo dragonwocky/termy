@@ -296,7 +296,7 @@ function time(args) {
     meridiem = (date.getHours() > 11) ? 'PM' : 'AM',
     // Get the the date in dd/mm/yyyy format.
     dd = (date.getDate() < 10) ? '0' + date.getDate() : date.getDate(),
-    mm = (date.getMonth() < 10) ? '0' + date.getMonth() : date.getMonth(),
+    mm = (date.getMonth() + 1 < 10) ? '0' + date.getMonth() + 1 : date.getMonth() + 1,
     yyyy = date.getFullYear(),
     // Get the user's timezone.
     timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
