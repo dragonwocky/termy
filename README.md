@@ -1,26 +1,25 @@
-#Termy
-========
+# Termy
 *An easily customisable web terminal built with JavaScript.*
 
 ![animated demo](termy.gif)
 
-##Using Termy
---------------
-To use Termy, simply download `jquery-3.2.1.min.js`, `typed-2.0.6.min.js` and `shell.js` - then add the following code to the <head> element of your file, and Termy will do the rest:
+### Usage
+----------
+To use Termy, simply download `jquery-3.2.1.min.js`, `typed-2.0.6.min.js` and `termy.js` - then add the following code to the <head> element of your file, and Termy will do the rest:
 ```
 <script src="jquery-3.2.1.min.js"></script>
 <script src="typed-2.0.6.min.js"></script>
-<script src="shell.js"></script>
+<script src="termy.min.js"></script>
 ```
 
-##Default Commands
--------------------
+### Default Commands
+---------------------
 The core commands of Termy are `help - display all available commands`, `man - show detailed information about commands`, `clear - remove all previously run commands from the terminal` and `exit - logs out, to execute commands afterwards the page must be reloaded`.
 
 There are also 2 built-in "custom commands": `time - display the current time` and `google - google the command arguments`.
 
-##Adding Custom Commands
--------------------------
+### Adding Custom Commands
+---------------------------
 Adding your own commands to Termy is simple. Open `shell.js`, and add your command to the `commands` object. There you have three options. These are best demonstrated by the `exit` command:
 ```
 exit: { // The name of the command
@@ -60,8 +59,8 @@ When adding text to the terminal, always either use the Typed.js method demonstr
 
 ***NOTE:** Currently, only letters, numbers, underscores, hyphens and full stops can be typed into the terminal, and typing into the terminal on mobile does not yet work. Keep this in mind when adding custom commands.*
 
-##Other Customisation
-----------------------
+### Other Customisation
+------------------------
 The only other parts of Termy meant to be modified are the `user` and `host` variables. By default `user = 'visitor'` and `host = window.location.hostname || 'example.domain'` - this means that the default hostname is the website's domain name, but if there is no valid domain name (E.g. Termy is being opened from a local file), the default hostname is `example.domain`. These can be modified, or left as they are. You choose.
 ```
 user = 'termy',
@@ -69,6 +68,6 @@ host = 'thedragonring.me',
 // This sets the prefix to: termy@thedragonring.me:~ $
 ```
 
-##Other Details
-----------------
-Termy was originally made as a 2017 Christmas gift to the community by TheDragonRing, inspired when he saw https://host01.th3f.de/ during some random browsing.
+### Other Details
+------------------
+Termy was originally made as a 2017 Christmas gift to the community by TheDragonRing, inspired when he saw https://host01.th3f.de/ during some random browsing. It is licensed under the [MIT License](LICENSE).
