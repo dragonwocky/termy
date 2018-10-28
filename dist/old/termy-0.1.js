@@ -7,7 +7,8 @@
 // Variables for later use.
 var command = '',
   commandCount = 0,
-  typePos = 0,
+  commandList = [],
+  commandIndex = 1,
   loggedIn = true,
   // User and host names.
   user = 'visitor',
@@ -103,6 +104,32 @@ function shell() {
         $(this).scrollTop($(this).height());
         $('#' + (commandCount - 1) + ' .input').html(command);
       }
+      // Up Arrow
+      if(e.which === 38){
+        if(list[listIndex - 1] !== undefined){
+          listIndex--;
+          e.preventDefault();
+          command = list[listIndex];
+          $(this).scrollTop($(this).height());
+          $('#' + (commandCount - 1) + ' .input').html(command);
+        }
+      }
+      // Down arrow
+      if(e.which === 40){
+        if(list[listIndex + 1] !== undefined){
+          listIndex++;
+          e.preventDefault();
+          command = list[listIndex];
+          $(this).scrollTop($(this).height());
+          $('#' + (commandCount - 1) + ' .input').html(command);
+        }else{
+          listIndex = list.length;
+          e.preventDefault();
+          command = "";
+          $(this).scrollTop($(this).height());
+          $('#' + (commandCount - 1) + ' .input').html(command);
+        }
+      }
     }
   });
   $(window).keypress(function (e) {
@@ -128,6 +155,10 @@ function shell() {
           command = arguments[0].toLowerCase(),
             // Error message if unregistered command.
             registered = [];
+          if(list[listIndex - 1] !== command){
+            list.push(command);
+            listIndex = list.length;
+          }
           Object.getOwnPropertyNames(commands).forEach(
             function (val, idx, array) {
               registered.push(val);
