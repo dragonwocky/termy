@@ -1,26 +1,44 @@
 <!DOCTYPE html>
 
 <!--
-  Termy - An easily customisable web terminal built with JavaScript.
-  ==================================================================
-  Copyright (c) 2017 TheDragonRing <hello@thedragonring.me>, under the MIT License.
+  Termy.js - An easily customisable web terminal interface.
+  ==========================================================
+  Copyright (c) 2017 - 2018 TheDragonRing <thedragonring.bod@gmail.com>, under the MIT License.
 -->
 
 <html>
 
 <head>
   <!-- Metadata -->
-  <title>Termy</title>
   <meta charset="UTF-8">
   <meta name="author" content="TheDragonRing">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Termy.js - An easily customisable web terminal interface.</title>
+  <meta name="description" content="An easily customisable web terminal interface built with JavaScript for menus, tutorials, games, and more!">
   <!-- JS -->
-  <script src="jquery-3.2.1.min.js"></script>
-  <script src="typed-2.0.6.min.js"></script>
-  <script src="termy.js"></script>
+  <script src="dependencies/jquery-3.3.1.min.js"></script>
+  <script src="dependencies/typed-2.0.6.min.js"></script>
+  <script src="dependencies/autosize-4.0.0.min.js"></script>
+  <script src="dist/termy-1.0.js"></script>
 </head>
 
 <body>
+  <div class="termy">
+  </div>
+  <div class="termy">
+  </div>
+  <button class="idk" onclick="new Termy('.termy', {
+    host: 'localhost',
+    user: 'tdr',
+    colours: {
+      error: '#f00',
+      prefix: '#0f0',
+      prompt: '#f00',
+      background: '#000',
+      text: '#fff'
+    },
+    fontSize: '1em'
+  }).init()">idk</button>
 </body>
 
 </html>
